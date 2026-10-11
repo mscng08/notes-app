@@ -1,6 +1,42 @@
-node_modules/
-dist/
-target/
-.idea/
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+frontend/.env
+**/.env
+**/.env.*
+!**/.env.example
+
+application-secrets.properties
+secrets.properties
+
+# Java / Maven
+**/target/
+*.class
+*.jar
+*.war
+
+# Node.js frontend
+**/node_modules/
+**/dist/
+**/build/
+**/coverage/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# IDE and operating system
 .vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Logs
 *.log
+logs/
+
+# Local database files and backups
+*.sql
+*.dump
+*.bak
