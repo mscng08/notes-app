@@ -22,7 +22,7 @@ export const errorMessage = (err) => {
   }
   if (err.response?.data?.message) return err.response.data.message;
   if (err.code === "ERR_NETWORK") {
-    return "Cannot reach the server. Is the backend running on port 8080?";
+    return "Cannot reach the server. Is the backend running and is VITE_API_URL correct?";
   }
   return "Something went wrong. Please try again.";
 };

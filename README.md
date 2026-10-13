@@ -83,3 +83,41 @@ Tests use an in-memory H2 database, so MySQL is not needed for them.
 - **"Cannot reach the server"**: backend is not running, or port 8080 is busy.
 - **Access denied for user**: fix MySQL username/password in `application.properties`.
 - **CORS error**: if the frontend runs on a different port, add it to `app.cors.allowed-origins`.
+
+---
+
+## Run everything with Docker (one command)
+```bash
+docker compose up --build
+```
+Frontend: http://localhost:3000 · API: http://localhost:8080/api/notes · Health: http://localhost:8080/health
+
+## Environment variables
+
+| Where | Variable | Purpose |
+|-------|----------|---------|
+| Backend | `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` | MySQL connection (or Railway's `MYSQLHOST/PORT/DATABASE/USER/PASSWORD`, read automatically) |
+| Backend | `CORS_ALLOWED_ORIGINS` | Frontend URL(s), comma separated, wildcards allowed |
+| Backend | `PORT` | Set automatically by Render/Railway |
+| Frontend | `VITE_API_URL` | Backend URL ending in `/api` (baked in at build time) |
+
+See `backend/.env.example` and `frontend/.env.example`. Never commit real `.env` files.
+
+## Deploy
+
+**Recommended: Railway (backend + MySQL) + Vercel (frontend)**
+
+1. Push to GitHub (see below).
+2. Railway: New Project > Deploy from GitHub repo > set **Root Directory** to `backend`. Then **+ New > Database > MySQL**. In the backend service, add variable references to the MySQL service (`MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, `MYSQLPASSWORD`) and `CORS_ALLOWED_ORIGINS` (set after step 3). Settings > Networking > Generate Domain.
+3. Vercel: Add New Project > import repo > **Root Directory** `frontend` > env var `VITE_API_URL=https://<railway-domain>/api` > Deploy.
+4. Copy the Vercel URL into Railway's `CORS_ALLOWED_ORIGINS`, e.g. `https://your-app.vercel.app,https://*.vercel.app`, and redeploy.
+
+**Alternative: Render.** `render.yaml` defines the backend (Docker) and the frontend (static site). Render has no managed MySQL, so use Railway MySQL, Aiven or TiDB Cloud and set `DB_URL` / `DB_USERNAME` / `DB_PASSWORD`. Free instances sleep after inactivity, so the first request can be slow.
+
+## Push to GitHub
+```bash
+git add -A
+git commit -m "Add deployment configuration"
+git push origin main
+```
+CI (`.github/workflows/ci.yml`) runs backend tests and the frontend build on every push.
