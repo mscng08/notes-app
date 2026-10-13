@@ -4,6 +4,13 @@
 **Roll No:** 24EG110A28  
 **Department:** CSE-DS(A)
 
+## Live demo
+- **App:** https://notes-frontend-3hvg.onrender.com
+- **API health check:** https://notes-backend-c34l.onrender.com/health
+- **Source:** https://github.com/mscng08/notes-app
+
+> Hosted on free tiers: the backend sleeps when idle, so the first load can take about 50 seconds.
+
 A simple web-based digital notebook to create, view, edit and delete notes.
 Full-stack project: **React.js** (frontend) + **Spring Boot** (REST API) + **MySQL** (database).
 
